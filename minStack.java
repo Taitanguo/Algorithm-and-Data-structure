@@ -1,37 +1,29 @@
-class MinStack {
-    class ListNode{ //use ListNode to complete the function of the stack
-        int val;
-        int min; //store the min value
-        ListNode next;
-        ListNode(int x){
-            val = x;
-            min = x;
+public class MinStack {
+    private Stack<Integer> stack;
+    private Stack<Integer> minStack;
+
+    public MinStack() {
+        stack = new Stack<Integer>();
+        minStack = new Stack<Integer>();
+    }
+
+    public void push(int number) {
+        stack.push(number);
+        if (minStack.isEmpty()) {
+            minStack.push(number);
+        } else {
+            minStack.push(Math.min(number, minStack.peek()));
         }
     }
-    ListNode head;
-    public void push(int x) {
-        if(head == null) {
-            head = new ListNode(x);
-            return;
-        }
-        ListNode temp = new ListNode(x);
-        if(x > head.min) temp.min = head.min;
-        temp.next = head;
-        head = temp;
+
+    public int pop() {
+        minStack.pop();
+        return stack.pop();
     }
 
-    public void pop() {
-        if(head == null)  return;
-        head = head.next;
-    }
-
-    public int top() {
-        if(head == null)  return Integer.MAX_VALUE;
-        return head.val;
-    }
-
-    public int getMin() {
-        if(head == null)  return Integer.MAX_VALUE;
-        return head.min;
+    public int min() {
+        return minStack.peek();
     }
 }
+        //if this top is the smallest one, pop will not affect the result since the real one also pop the smallest one
+        //if the top is not the smallest one, pop won't affect two, cause we have back up of the smallest one
